@@ -1,0 +1,107 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bouncing Bubble</title>
+
+    <style>
+        html,
+        body {
+            margin: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: #000;
+        }
+
+        #bubble {
+            position: absolute;
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            background: #008080;
+            box-shadow:
+                inset -10px -10px 18px rgba(0, 0, 0, 0.25),
+                inset 10px 10px 18px rgba(255, 255, 255, 0.2),
+                0 0 18px rgba(0, 128, 128, 0.5);
+
+            left: 0;
+            top: 0;
+
+            /* Makes movement smoother */
+            will-change: transform;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="bubble"></div>
+
+    <script>
+        const bubble = document.getElementById("bubble");
+
+        let x = 100;
+        let y = 100;
+
+        // Speed in pixels per frame
+        let vx = 3;
+        let vy = 2.4;
+
+        function animate() {
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+
+            const bubbleWidth = bubble.offsetWidth;
+            const bubbleHeight = bubble.offsetHeight;
+
+            x += vx;
+            y += vy;
+
+            // Bounce off left/right edges
+            if (x <= 0) {
+                x = 0;
+                vx *= -1;
+            }
+
+            if (x + bubbleWidth >= width) {
+                x = width - bubbleWidth;
+                vx *= -1;
+            }
+
+            // Bounce off top/bottom edges
+            if (y <= 0) {
+                y = 0;
+                vy *= -1;
+            }
+
+            if (y + bubbleHeight >= height) {
+                y = height - bubbleHeight;
+                vy *= -1;
+            }
+
+            bubble.style.transform = `translate(${x}px, ${y}px)`;
+
+            requestAnimationFrame(animate);
+        }
+
+        // Start animation
+        animate();
+
+        // Keep the bubble inside the screen if the window is resized
+        window.addEventListener("resize", () => {
+            x = Math.min(x, window.innerWidth - bubble.offsetWidth);
+            y = Math.min(y, window.innerHeight - bubble.offsetHeight);
+
+            x = Math.max(0, x);
+            y = Math.max(0, y);
+        });
+    </script>
+
+</body>
+
+</html>
+```
